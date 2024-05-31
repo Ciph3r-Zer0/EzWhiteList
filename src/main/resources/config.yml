@@ -1,0 +1,12 @@
+database:
+  type: "SQLite"
+  host: "127.0.0.1"
+  port: "3306"
+  name: "db_name"
+  table-name: "whitelist_plus"
+  user: "root"
+  pass: "Admin@123"
+
+# DO NOT TOUCH!
+config-version: 1
+
