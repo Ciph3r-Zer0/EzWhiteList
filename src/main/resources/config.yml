@@ -2,8 +2,8 @@ database:
   type: "SQLite"
   host: "127.0.0.1"
   port: "3306"
-  name: "db_name"
-  table-name: "whitelist_plus"
+  database_name: "db_name"
+  table-name: "ez_whitelist"
   user: "root"
   pass: "Admin@123"
 

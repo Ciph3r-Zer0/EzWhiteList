@@ -1,4 +1,4 @@
-package dev.rafi.whitelistplus.common
+package dev.rafi.ezwhitelist.common.services
 
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Database
@@ -44,7 +44,7 @@ class DataBaseService(val filePath: Path) {
 
     private fun sqLite() {
         val sqLiteDriver = "org.sqlite.JDBC"
-        val dbFile = File(filePath.toFile(), "${ConfigService.DB_NAME}.db")
+        val dbFile = File(filePath.toFile(), "${ConfigService.DB_TABLE_NAME}.db")
 
         if (!(dbFile.exists())) dbFile.createNewFile()
 

@@ -11,6 +11,7 @@ version = "1.0.0"
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.panda-lang.org/releases")
 }
 
 dependencies {
@@ -27,16 +28,22 @@ dependencies {
 
     implementation("mysql:mysql-connector-java:8.0.33")
     implementation("org.xerial:sqlite-jdbc:3.45.2.0")
+
+    implementation("dev.rollczi:litecommands-velocity:3.4.1")
 }
 
 kotlin {
     jvmToolchain(17)
 }
 
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("-parameters")
+}
+
 tasks {
     shadowJar {
-        relocate("dev.dejvokep.boostedyaml", "dev.rafi.whitelistplus.libs.bosstedyaml")
-        relocate("org.bstats", "dev.rafi.whitelistplus.libs.bstats")
+        relocate("dev.dejvokep.boostedyaml", "dev.rafi.ezwhitelist.common.libs.bosstedyaml")
+        relocate("org.bstats", "dev.rafi.ezwhitelist.common.libs.bstats")
     }
 
     runVelocity {

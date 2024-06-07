@@ -1,4 +1,4 @@
-package dev.rafi.whitelistplus.common
+package dev.rafi.ezwhitelist.common.services
 
 import dev.dejvokep.boostedyaml.YamlDocument
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning
@@ -9,7 +9,7 @@ import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings
 import java.io.File
 import java.nio.file.Path
 
-class ConfigService(filePath: Path, fileName: String) {
+class MessageService(filePath: Path, fileName: String) {
     init {
         init(filePath, fileName)
     }
@@ -42,24 +42,12 @@ class ConfigService(filePath: Path, fileName: String) {
             }
         }
 
-        lateinit var DB_TYPE: String
-        lateinit var DB_HOST: String
-        lateinit var DB_PORT: String
-        lateinit var DB_NAME: String
-        lateinit var DB_TABLE_NAME: String
-        lateinit var DB_USERNAME: String
-        lateinit var DB_PASSWORD: String
+        lateinit var PREFIX: String
 
         lateinit var CONFIG_VERSION: Number
 
         private fun initProperties() {
-            DB_TYPE = config.getString("database.type")
-            DB_HOST = config.getString("database.host")
-            DB_PORT = config.getString("database.port")
-            DB_NAME = config.getString("database.name")
-            DB_TABLE_NAME = config.getString("database.table-name")
-            DB_USERNAME = config.getString("database.user")
-            DB_PASSWORD = config.getString("database.pass")
+            PREFIX = config.getString("prefix")
 
             CONFIG_VERSION = config.getInt("config-version")
         }
