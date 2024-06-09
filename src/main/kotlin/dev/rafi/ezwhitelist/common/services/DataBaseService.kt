@@ -13,7 +13,7 @@ import java.sql.Connection
 object DBServer : Table(ConfigService.DB_TABLE_NAME) {
     val id: Column<Int> = integer("id").autoIncrement()
     val name: Column<String> = varchar("name", length = 32).uniqueIndex()
-    val status: Column<Boolean> = bool("status").default(false).index()
+    val status: Column<Boolean> = bool("status").default(false)
     val players: Column<String> = text("players")
 
     override val primaryKey = PrimaryKey(id)

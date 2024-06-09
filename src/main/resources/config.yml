@@ -7,6 +7,8 @@ database:
   user: "root"
   pass: "Admin@123"
 
+legacy-colors: false
+
 # DO NOT TOUCH!
 config-version: 1
 

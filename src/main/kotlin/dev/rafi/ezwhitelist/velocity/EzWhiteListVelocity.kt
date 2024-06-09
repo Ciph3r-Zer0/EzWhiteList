@@ -8,12 +8,9 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
-import dev.rafi.ezwhitelist.common.commands.EzWhiteListCommand
+import dev.rafi.ezwhitelist.velocity.commands.EzWhiteListCommand
 import dev.rafi.ezwhitelist.common.helper.miniMessage
-import dev.rafi.ezwhitelist.common.services.ConfigService
-import dev.rafi.ezwhitelist.common.services.DBServer
-import dev.rafi.ezwhitelist.common.services.DataBaseService
-import dev.rafi.ezwhitelist.common.services.MessageService
+import dev.rafi.ezwhitelist.common.services.*
 import dev.rollczi.litecommands.LiteCommands
 import dev.rollczi.litecommands.adventure.LiteAdventureExtension
 import dev.rollczi.litecommands.velocity.LiteVelocityFactory
@@ -40,33 +37,6 @@ class EzWhiteListVelocity @Inject constructor(
     @Subscribe
     private fun proxyStartEvent(event: ProxyInitializeEvent) {
         start(this)
-
-        ConfigService(dataDir, "config.yml")
-        MessageService(dataDir, "messages.yml")
-        DataBaseService(dataDir)
-
-        liteCommands = LiteVelocityFactory.builder(proxyServer)
-            .extension(LiteAdventureExtension()) {
-                it.miniMessage(true)
-                it.legacyColor(true)
-                it.colorizeArgument(true)
-                it.serializer(miniMessage)
-            }
-            .commands(
-                EzWhiteListCommand()
-            )
-            .build()
-
-        transaction {
-            proxyServer.allServers.forEach { server ->
-                DBServer.insertIgnore {
-                    it[name] = server.serverInfo.name
-                    it[players] = ""
-                }
-            }
-        }
-
-        metricsFactory.make(this, 22092)
     }
 
     @Subscribe
@@ -86,6 +56,39 @@ class EzWhiteListVelocity @Inject constructor(
             proxyServer = plugin.proxyServer
             logger = plugin.logger
             dataDir = plugin.dataDir
+
+            ConfigService(dataDir, "config.yml")
+            MessageService(dataDir, "messages.yml")
+            DataBaseService(dataDir)
+
+            liteCommands = LiteVelocityFactory.builder(proxyServer)
+                .extension(LiteAdventureExtension()) {
+                    it.miniMessage(true)
+                    it.legacyColor(true)
+                    it.colorizeArgument(true)
+                    it.serializer(miniMessage)
+                }
+                .commands(
+                    EzWhiteListCommand()
+                )
+                .build()
+
+            transaction {
+                proxyServer.allServers.forEach { server ->
+                    DBServer.insertIgnore {
+                        it[name] = server.serverInfo.name
+                        it[players] = ""
+                    }
+                }
+            }
+
+            ServerService.loadAllServers()
+
+            ServerService.serverList.forEach {
+                println("${it.name} | ${it.status}")
+            }
+
+            plugin.metricsFactory.make(plugin, 22181)
         }
 
         fun shutDown() {

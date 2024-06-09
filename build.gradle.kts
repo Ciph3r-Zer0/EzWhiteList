@@ -22,12 +22,12 @@ dependencies {
 
     implementation("org.bstats:bstats-velocity:3.0.2")
 
-    implementation("org.jetbrains.exposed:exposed-core:0.51.0")
-    implementation("org.jetbrains.exposed:exposed-dao:0.51.0")
-    implementation("org.jetbrains.exposed:exposed-jdbc:0.51.0")
+    implementation("org.jetbrains.exposed:exposed-core:0.51.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.51.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.51.1")
 
     implementation("mysql:mysql-connector-java:8.0.33")
-    implementation("org.xerial:sqlite-jdbc:3.45.2.0")
+    implementation("org.xerial:sqlite-jdbc:3.46.0.0")
 
     implementation("dev.rollczi:litecommands-velocity:3.4.1")
 }

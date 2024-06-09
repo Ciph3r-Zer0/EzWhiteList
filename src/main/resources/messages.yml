@@ -1,4 +1,18 @@
-prefix: "&7[&fWhiteList&cPlus&7]"
+prefix: "<gray>[<white><b>Ez<blue>WhiteList</b><gray>] <obf>ii</obf>"
+config-reload-success: "{prefix} <gray>Reload <green>Successfull"
+config-reload-failure: "{prefix} <gray>Reload <red>Failed"
+whitelist-enable-global: "{prefix} <gray>Whitelist has been <green>Enabled <gray>globally"
+whitelist-enable-server: "{prefix} <gray>Whitelist has been <green>Enabled <gray>in <blue>{server}"
+whitelist-disable-global: "{prefix} <gray>Whitelist has been <red>Disabled <gray>globally"
+whitelist-disable-server: "{prefix} <gray>Whitelist has been <red>Disabled <gray>in <blue>{server}"
+whitelist-add-global: "{prefix} <gray>Player <blue>{player} <gray>has been <green>Added <gray>to whitelist globally"
+whitelist-add-server: "{prefix} <gray>Player <blue>{player} <gray>has been <green>Added <gray>to whitelist in <blue>{server}"
+whitelist-remove-global: "{prefix} <gray>Player <blue>{player} <gray>has been <red>Removed <gray>from whitelist globally"
+whitelist-remove-server: "{prefix} <gray>Player <blue>{player} <gray>has been <red>Removed <gray>from whitelist in <blue>{server}"
+
+server-not-found: "{prefix} <gray>Specified server <blue>{server} <gray>could <red>Not <gray>be found!"
+wrong-usage: "{prefix} <gray>Wrong usage of command, Use <blue>/EzWl Help <gray>for more info!"
+
 kick: "&7You're &cNot &7whitelisted at this server"
 
 # DO NOT TOUCH!

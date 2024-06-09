@@ -50,16 +50,20 @@ class ConfigService(filePath: Path, fileName: String) {
         lateinit var DB_USERNAME: String
         lateinit var DB_PASSWORD: String
 
+        var LEGACY_COLORS: Boolean = false
+
         lateinit var CONFIG_VERSION: Number
 
         private fun initProperties() {
             DB_TYPE = config.getString("database.type")
             DB_HOST = config.getString("database.host")
             DB_PORT = config.getString("database.port")
-            DB_NAME = config.getString("database.database-name")
+            DB_NAME = config.getString("database.database_name")
             DB_TABLE_NAME = config.getString("database.table-name")
             DB_USERNAME = config.getString("database.user")
             DB_PASSWORD = config.getString("database.pass")
+
+            LEGACY_COLORS = config.getBoolean("legacy-colors")
 
             CONFIG_VERSION = config.getInt("config-version")
         }
