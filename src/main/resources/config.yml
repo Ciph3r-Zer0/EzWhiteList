@@ -1,4 +1,5 @@
 database:
+  # Available types are: MYSQL, SQLite
   type: "SQLite"
   host: "127.0.0.1"
   port: "3306"
@@ -7,7 +8,23 @@ database:
   user: "root"
   pass: "Admin@123"
 
-legacy-colors: false
+tasks:
+  save:
+    # If you enable this any changes will be instantly saved to database
+    instant: true
+    # Interval in seconds in which the changes will be saved to database
+    # Will do nothing if you enable "instant" option
+    interval: 5
+  add:
+    # When players try to join a server or switch between them,
+    # If target server does not exist plugin will instantly load and save that server
+    on-check: true
+    # Will add and save the server instance on players whitelist check in case it is missing
+    # Will not prevent player from joining the server
+    on-command: true
+    # Interval in seconds in which servers that are newly added to the proxy will be loaded
+    # Will do nothing if you enable "instant" option
+    interval: 5
 
 # DO NOT TOUCH!
 config-version: 1

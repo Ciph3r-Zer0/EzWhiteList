@@ -30,11 +30,21 @@ class ServerService {
             }
         }
 
-        fun updateServer(server: Server) {
+        fun upsertServer(server: Server) {
             transaction {
-                DBServer.update({ DBServer.name eq server.name }) {
-                    it[status] = server.status
-                    it[players] = server.players.joinToString(",")
+                val exists = DBServer.selectAll().where { DBServer.name eq server.name }.limit(1).firstOrNull()
+
+                if (exists != null) {
+                    DBServer.update({ DBServer.name eq server.name }) {
+                        it[status] = server.status
+                        it[players] = server.players.joinToString(",")
+                    }
+                } else {
+                    DBServer.insert {
+                        it[name] = server.name
+                        it[status] = server.status
+                        it[players] = server.players.joinToString(",")
+                    }
                 }
             }
         }

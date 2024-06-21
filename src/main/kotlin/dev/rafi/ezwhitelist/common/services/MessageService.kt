@@ -6,7 +6,6 @@ import dev.dejvokep.boostedyaml.settings.dumper.DumperSettings
 import dev.dejvokep.boostedyaml.settings.general.GeneralSettings
 import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings
-import dev.rafi.ezwhitelist.common.helper.colorizeComponent
 import net.kyori.adventure.text.Component
 import java.io.File
 import java.nio.file.Path
@@ -46,19 +45,28 @@ class MessageService(filePath: Path, fileName: String) {
 
         lateinit var PREFIX: String
 
-        lateinit var CONFIG_RELOAD_SUCCESS: Component
-        lateinit var CONFIG_RELOAD_FAILURE: Component
-        lateinit var WHITELIST_ENABLE_GLOBAL: Component
-        lateinit var WHITELIST_ENABLE_SERVER: Component
-        lateinit var WHITELIST_DISABLE_GLOBAL: Component
-        lateinit var WHITELIST_DISABLE_SERVER: Component
-        lateinit var WHITELIST_ADD_GLOBAL: Component
-        lateinit var WHITELIST_ADD_SERVER: Component
-        lateinit var WHITELIST_REMOVE_GLOBAL: Component
-        lateinit var WHITELIST_REMOVE_SERVER: Component
+        lateinit var CONFIG_RELOAD_SUCCESS: String
+        lateinit var CONFIG_RELOAD_FAILURE: String
+        lateinit var WHITELIST_ENABLE_GLOBAL: String
+        lateinit var WHITELIST_ENABLE_SERVER: String
+        lateinit var WHITELIST_DISABLE_GLOBAL: String
+        lateinit var WHITELIST_DISABLE_SERVER: String
+        lateinit var WHITELIST_ADD_GLOBAL: String
+        lateinit var WHITELIST_ADD_SERVER: String
+        lateinit var WHITELIST_REMOVE_GLOBAL: String
+        lateinit var WHITELIST_REMOVE_SERVER: String
 
-        lateinit var SERVER_NOT_FOUND: Component
-        lateinit var WRONG_USAGE: Component
+        lateinit var PLAYER_EXISTS_GLOBAL: String
+        lateinit var PLAYER_EXISTS_SERVER: String
+        lateinit var PLAYER_NOT_EXISTS_GLOBAL: String
+        lateinit var PLAYER_NOT_EXISTS_SERVER: String
+
+        lateinit var NO_PERMISSION: String
+        lateinit var SERVER_NOT_FOUND: String
+        lateinit var WRONG_USAGE: String
+
+        lateinit var KICK: String
+        lateinit var PREVENT_SWITCH: String
 
         lateinit var CONFIG_VERSION: Number
 
@@ -76,14 +84,23 @@ class MessageService(filePath: Path, fileName: String) {
             WHITELIST_REMOVE_GLOBAL = setPlaceHolders(config.getString("whitelist-remove-global"))
             WHITELIST_REMOVE_SERVER = setPlaceHolders(config.getString("whitelist-remove-server"))
 
+            PLAYER_EXISTS_GLOBAL = setPlaceHolders(config.getString("player-exists-global"))
+            PLAYER_EXISTS_SERVER = setPlaceHolders(config.getString("player-exists-server"))
+            PLAYER_NOT_EXISTS_GLOBAL = setPlaceHolders(config.getString("player-not-exists-global"))
+            PLAYER_NOT_EXISTS_SERVER = setPlaceHolders(config.getString("player-not-exists-server"))
+
+            NO_PERMISSION = setPlaceHolders(config.getString("no-permission"))
             SERVER_NOT_FOUND = setPlaceHolders(config.getString("server-not-found"))
             WRONG_USAGE = setPlaceHolders(config.getString("wrong-usage"))
 
-            CONFIG_VERSION = config.getInt("config-version")
+            KICK = setPlaceHolders(config.getString("kick"))
+            PREVENT_SWITCH = setPlaceHolders(config.getString("prevent-switch"))
+
+                CONFIG_VERSION = config.getInt("config-version")
         }
 
-        private fun setPlaceHolders(data: String): Component {
-            return colorizeComponent(data.replace("{prefix}", PREFIX))
+        private fun setPlaceHolders(data: String): String {
+            return data.replace("\$prefix", PREFIX)
         }
     }
 }

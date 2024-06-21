@@ -1,19 +1,17 @@
 package dev.rafi.ezwhitelist.velocity
 
 import com.google.inject.Inject
-import com.velocitypowered.api.command.CommandSource
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
-import dev.rafi.ezwhitelist.velocity.commands.EzWhiteListCommand
-import dev.rafi.ezwhitelist.common.helper.miniMessage
+import com.velocitypowered.api.scheduler.ScheduledTask
 import dev.rafi.ezwhitelist.common.services.*
-import dev.rollczi.litecommands.LiteCommands
-import dev.rollczi.litecommands.adventure.LiteAdventureExtension
-import dev.rollczi.litecommands.velocity.LiteVelocityFactory
+import dev.rafi.ezwhitelist.velocity.commands.EZWLCommand
+import dev.rafi.ezwhitelist.velocity.listeners.VelocityEvents
+import dev.rafi.ezwhitelist.velocity.tasks.SaveTask
 import org.bstats.velocity.Metrics
 import org.jetbrains.exposed.sql.insertIgnore
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -49,7 +47,7 @@ class EzWhiteListVelocity @Inject constructor(
         lateinit var proxyServer: ProxyServer
         lateinit var logger: Logger
         lateinit var dataDir: Path
-        lateinit var liteCommands: LiteCommands<CommandSource>
+        var saveTask: ScheduledTask? = null
 
         fun start(plugin: EzWhiteListVelocity) {
             inst = plugin
@@ -59,21 +57,16 @@ class EzWhiteListVelocity @Inject constructor(
 
             ConfigService(dataDir, "config.yml")
             MessageService(dataDir, "messages.yml")
+            EZWLCommand()
+            VelocityEvents()
+
             DataBaseService(dataDir)
 
-            liteCommands = LiteVelocityFactory.builder(proxyServer)
-                .extension(LiteAdventureExtension()) {
-                    it.miniMessage(true)
-                    it.legacyColor(true)
-                    it.colorizeArgument(true)
-                    it.serializer(miniMessage)
-                }
-                .commands(
-                    EzWhiteListCommand()
-                )
-                .build()
-
             transaction {
+                DBServer.insertIgnore {
+                    it[name] = "__global__"
+                    it[players] = ""
+                }
                 proxyServer.allServers.forEach { server ->
                     DBServer.insertIgnore {
                         it[name] = server.serverInfo.name
@@ -83,16 +76,13 @@ class EzWhiteListVelocity @Inject constructor(
             }
 
             ServerService.loadAllServers()
-
-            ServerService.serverList.forEach {
-                println("${it.name} | ${it.status}")
-            }
+            saveTask = SaveTask.startSaveTask(ConfigService.SAVE_INTERVAL)
 
             plugin.metricsFactory.make(plugin, 22181)
         }
 
         fun shutDown() {
-            liteCommands.unregister()
+            saveTask?.cancel()
         }
     }
 }

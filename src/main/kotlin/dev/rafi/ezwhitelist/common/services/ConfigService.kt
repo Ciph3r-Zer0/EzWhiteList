@@ -50,7 +50,12 @@ class ConfigService(filePath: Path, fileName: String) {
         lateinit var DB_USERNAME: String
         lateinit var DB_PASSWORD: String
 
-        var LEGACY_COLORS: Boolean = false
+        var SAVE_INSTANT: Boolean = false
+        var SAVE_INTERVAL: Long = 5
+
+        var ADD_ON_CHECK: Boolean = true
+        var ADD_INSTANT: Boolean = true
+        var ADD_INTERVAL: Long = 5
 
         lateinit var CONFIG_VERSION: Number
 
@@ -63,7 +68,12 @@ class ConfigService(filePath: Path, fileName: String) {
             DB_USERNAME = config.getString("database.user")
             DB_PASSWORD = config.getString("database.pass")
 
-            LEGACY_COLORS = config.getBoolean("legacy-colors")
+            SAVE_INSTANT = config.getBoolean("tasks.save.instant")
+            SAVE_INTERVAL = config.getLong("tasks.save.interval")
+
+            ADD_ON_CHECK = config.getBoolean("tasks.add.on-check")
+            ADD_INSTANT = config.getBoolean("tasks.add.instant")
+            ADD_INTERVAL = config.getLong("tasks.add.interval")
 
             CONFIG_VERSION = config.getInt("config-version")
         }
